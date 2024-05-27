@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import logging
 from colorama import Fore, Style, init
-from tqdm import tqdm  # Import tqdm for the loading indicator
+from tqdm import tqdm  
 
 # Initialize colorama
 init(autoreset=True)
@@ -25,9 +25,9 @@ def get_soup(url):
         logger.error(Fore.RED + f"Error fetching {url}: {e}")
         return None
 
-def is_valid_category(category_url):
+def is_valid_category(category_url, category):
     """Check if the category URL is valid by checking if the page contains products."""
-    logger.info(f"Checking if category URL is valid: {category_url}")
+    logger.info(f"Checking if {category} URL is valid: {category_url}")
     soup = get_soup(category_url)
     if soup is None:
         return False
@@ -123,8 +123,7 @@ def scrape_product(product_url):
         "Part Number": part_number,
         "Price": price,
         "Desciption": description,
-        "Image": image,    
-        "URL": product_url
+        "Image": image,
     }
 
 def save_to_csv(products, filename):
@@ -142,8 +141,9 @@ def main():
     url_parts = url_without_protocol.split("/")
 
     # Get the category, which is the third part
-    category = url_parts[3]
-    if is_valid_category(category_url):
+    category = url_parts[2]
+
+    if is_valid_category(category_url, category):
         logger.info(Fore.GREEN + "Valid category. Scraping products...")
 
         products = scrape_category(category_url)
