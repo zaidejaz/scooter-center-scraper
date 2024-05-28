@@ -181,6 +181,7 @@ def main():
         print("Choose option:")
         print("1. Enter a category URL")
         print("2. Search")
+        print("3. Exit")
         option = input("Enter your choice: ")
         if option == "1":
             category_url = input("Enter the category URL: ")
@@ -201,6 +202,9 @@ def main():
             products = search_products(search_query)
             if products:
                 save_to_csv(products, f"{search_query}.csv")
+        elif option == "3":
+            logger.info(Fore.YELLOW + "Exiting...")
+            break
         else:
             logger.error(Fore.RED + "Invalid choice. Please try again.")
 
